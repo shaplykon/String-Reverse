@@ -1,16 +1,16 @@
 #include "lib.h"
 #include <string.h>
-char* strrev(char* str) {
-    char* p1, * p2;
 
-    if (!str || !*str)
-        return str;
-    
-    for (p1 = str, p2 = str + strlen(str) - 1; p2 > p1; ++p1, --p2) {
-        *p1 ^= *p2;
-        *p2 ^= *p1;
-        *p1 ^= *p2;
-    }
+void reverse(char* x, int begin, int end)
+{
+	char c;
 
-    return str;
+	if (begin >= end)
+		return;
+
+	c = *(x + begin);
+	*(x + begin) = *(x + end);
+	*(x + end) = c;
+
+	reverse(x, ++begin, --end);
 }

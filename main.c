@@ -2,19 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include "lib.h"
-#include <unistd.h>
+#include <sys/stat.h>
 
 #define _CRT_SECURE_NO_WARNINGS
-#define MAXCHAR 1000
-void reverse(char* x, int begin, int end);
+#define MAXCHAR 100
 
 int main(int argc, char** argv)
 {
 	char inputFilename[MAXCHAR];
 	char outputFilename[MAXCHAR];
 	char line[MAXCHAR];
-
-
 
 	if (argc == 1)
 	{
@@ -37,7 +34,6 @@ int main(int argc, char** argv)
 	FILE* inputFile = fopen(inputFilename, "r");
 	FILE* outputFile = fopen(outputFilename, "w");
 
-
 	if (inputFile == NULL) {
 		printf("Could not open file %s", inputFilename);
 		return 1;
@@ -52,27 +48,18 @@ int main(int argc, char** argv)
 	while (fgets(line, MAXCHAR, inputFile) != NULL)
 	{
 		reverse(line, 0, strlen(line) - 1);
-		if (line != ""){
-			fprintf(outputFile, "%s\n", line);
-		}
-		//strrev(line);
+		fprintf(outputFile, "%s", line);
+	}
 
+	struct stat buffer;
+
+	if (stat(outputFilename, &buffer) == 0) {
+		printf("Text from %s was reversed and successfully written in %s file!", inputFilename, outputFilename);
+	}
+	else {
+		printf("Errors occured during string reverse from file %s", inputFilename);
 	}
 
 	fclose(inputFile);
 	fclose(outputFile);
-}
-
-void reverse(char* x, int begin, int end)
-{
-	char c;
-
-	if (begin >= end)
-		return;
-
-	c = *(x + begin);
-	*(x + begin) = *(x + end);
-	*(x + end) = c;
-
-	reverse(x, ++begin, --end);
 }

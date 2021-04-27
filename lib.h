@@ -1,1 +1,1 @@
-char* strrev(char*);
+void reverse(char* x, int begin, int end);
